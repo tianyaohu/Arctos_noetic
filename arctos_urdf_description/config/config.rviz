@@ -10,10 +10,6 @@ Panels:
         - /TF1
         - /TF1/Frames1
         - /TF1/Tree1
-        - /TF1/Tree1/base_link1
-        - /TF1/Tree1/base_link1/Link_1_11
-        - /TF1/Tree1/base_link1/Link_1_11/Link_2_11
-        - /TF1/Tree1/base_link1/Link_1_11/Link_2_11/Link_3_11
       Splitter Ratio: 0.4716981053352356
     Tree Height: 572
   - Class: rviz/Selection
@@ -153,7 +149,7 @@ Visualization Manager:
         base_link:
           Value: true
       Marker Alpha: 1
-      Marker Scale: 0.5
+      Marker Scale: 0.25
       Name: TF
       Show Arrows: true
       Show Axes: true
@@ -201,7 +197,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 1.1675536632537842
+      Distance: 1.6403288841247559
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -217,9 +213,9 @@ Visualization Manager:
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.680398166179657
+      Pitch: 0.7003982067108154
       Target Frame: <Fixed Frame>
-      Yaw: 0.2603970170021057
+      Yaw: 0.020396480336785316
     Saved: ~
 Window Geometry:
   Displays:

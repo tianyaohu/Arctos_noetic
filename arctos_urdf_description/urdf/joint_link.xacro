@@ -2,11 +2,8 @@
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="arctos_urdf">
 
 
-<xacro:macro name="arctos_link" params="name origin_xyz origin_rpy material_name">
+<xacro:macro name="arctos_link" params="name origin_xyz origin_rpy material_name inertia_origin_xyz inertia_origin_rpy mass ixx iyy izz ixy iyz ixz">
   <link name="${name}">
-    <inertial>
-      <xacro:insert_block name="inertial_properties"/>
-    </inertial>
     <visual>
       <origin xyz="${origin_xyz}" rpy="${origin_rpy}"/>
       <geometry>
@@ -20,6 +17,11 @@
         <mesh filename="package://arctos_urdf_description/meshes/${name}.stl" scale="0.001 0.001 0.001"/>
       </geometry>
     </collision>
+    <inertial>
+      <origin xyz="${inertia_origin_xyz}" rpy="${inertia_origin_rpy}"/>
+      <mass value="${mass}"/>
+      <inertia ixx="${ixx}" iyy="${iyy}" izz="${izz}" ixy="${ixy}" iyz="${iyz}" ixz="${ixz}"/>
+    </inertial>
   </link>
 </xacro:macro>
 
@@ -34,5 +36,20 @@
     <limit upper="${limit_u}" lower="${limit_l}" effort="${limit_e}" velocity="${limit_v}"/>
   </joint>
 </xacro:macro>
+
+<xacro:macro name="transmission" params="name joint_name actuator_name">
+  <transmission name="${name}">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="${joint_name}">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="${actuator_name}">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+</xacro:macro>
+
+
 
 </robot>
