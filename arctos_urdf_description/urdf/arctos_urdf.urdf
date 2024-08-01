@@ -9,6 +9,14 @@
   <color rgba="0.7764705882352941 0.7764705882352941 0.7764705882352941 1.0"/>
 </material>
 
+<!-- Define the world link explicitly -->
+<link name="world"/>
+
+<!-- fix the robot to the world -->
+<joint name="world_to_base_link" type="fixed">
+  <parent link="world"/>
+  <child link="base_link"/>
+</joint>
 
 <xacro:arctos_link 
     name="base_link" 
@@ -37,14 +45,14 @@
     ixx="0.128567" iyy="0.14463" izz="0.044463" ixy="3e-06" iyz="-0.003293" ixz="0.001539"
 />
 
-<xacro:arctos_link 
+<!-- <xacro:arctos_link 
     name="Link_3_1" 
     origin_xyz="-0.043 0.019045 -0.550385" origin_rpy="0 0 0" 
     material_name="paint_metallic_blue_2" 
     inertia_origin_xyz="-0.04178369242643258 -0.03913025368943244 0.01221763827191602" inertia_origin_rpy="0 0 0" 
     mass="3.601405589552794" 
     ixx="0.012497" iyy="0.006916" izz="0.011789" ixy="-3.6e-05" iyz="0.001536" ixz="-8.1e-05"
-/>
+/> 
 
 <xacro:arctos_link 
     name="Link_4_1" 
@@ -73,7 +81,6 @@
     ixx="5.2e-05" iyy="0.000103" izz="5.2e-05" ixy="-0.0" iyz="0.0" ixz="0.0"
 />
 
-<!-- START of Gripper Section -->
 <xacro:arctos_link 
     name="Gripper_1" 
     origin_xyz="-0.000193 0.319847 -0.570316" origin_rpy="0 0 0" 
@@ -99,10 +106,7 @@
     inertia_origin_xyz="-0.008289104952972526 -0.009768535307719373 0.009395511902715814" inertia_origin_rpy="0 0 0" 
     mass="0.07312902168719511" 
     ixx="1.1e-05" iyy="6e-06" izz="1.4e-05" ixy="-1e-06" iyz="0.0" ixz="-1e-06"
-/>
-<!-- END of Gripper Section -->
-
-<xacro:property name="pi" value="3.14159265359"/>
+/> -->
 
 <xacro:arctos_joint
   name="joint1" type="continuous"
@@ -119,7 +123,7 @@
   axis_xyz="1.0 -0.0 -0.0"
   limit_u="2.3" limit_l="-1.45" limit_e="100" limit_v="1"
 />
-
+<!-- 
 <xacro:arctos_joint
   name="joint3" type="continuous"
   parent="Link_2_1" child="Link_3_1"
@@ -143,15 +147,6 @@
   axis_xyz="-1.0 -0.0 0.0"
   limit_u="1.55" limit_l="-1.55" limit_e="100" limit_v="1"
 />
-
-<xacro:arctos_joint
-  name="gripper" type="fixed"
-  parent="Link_6_1" child="Gripper_1"
-  origin_xyz="0.0 -0.006085 0.0" origin_rpy="0 0 0"
-  axis_xyz="0 0 0"
-  limit_u="0" limit_l="0" limit_e="0" limit_v="0"
-/>
-
 <xacro:arctos_joint
   name="joint6" type="continuous"
   parent="Link_5_1" child="Link_6_1"
@@ -159,7 +154,13 @@
   axis_xyz="-0.0 1.0 -0.0"
   limit_u="${pi}" limit_l="${-pi}" limit_e="100" limit_v="1"
 />
-
+<xacro:arctos_joint
+  name="gripper" type="fixed"
+  parent="Link_6_1" child="Gripper_1"
+  origin_xyz="0.0 -0.006085 0.0" origin_rpy="0 0 0"
+  axis_xyz="0 0 0"
+  limit_u="0" limit_l="0" limit_e="0" limit_v="0"
+/>
 <xacro:arctos_joint
   name="jaw1" type="prismatic"
   parent="Gripper_1" child="Left_jaw_1"
@@ -167,13 +168,33 @@
   axis_xyz="-0.0 0.0 -1.0"
   limit_u="0.015" limit_l="0.0" limit_e="100" limit_v="100"
 />
-
 <xacro:arctos_joint
   name="jaw2" type="prismatic"
   parent="Gripper_1" child="Right_jaw_1"
   origin_xyz="0.007741 -0.039998 -0.030449" origin_rpy="0 0 0"
   axis_xyz="0.0 -0.0 1.0"
   limit_u="0.015" limit_l="0.0" limit_e="100" limit_v="100"
-/>
+/> -->
+
+<!-- END of Gripper Section -->
+
+
+<!-- Transmission section -->
+<xacro:transmission name="joint1_tran" joint_name="joint1" actuator_name="joint1_actr"/>
+<xacro:transmission name="joint2_tran" joint_name="joint2" actuator_name="joint2_actr"/>
+<!-- <xacro:transmission name="joint3_tran" joint_name="joint3" actuator_name="joint3_actr"/>
+<xacro:transmission name="joint4_tran" joint_name="joint4" actuator_name="joint4_actr"/>
+<xacro:transmission name="joint5_tran" joint_name="joint5" actuator_name="joint5_actr"/>
+<xacro:transmission name="joint6_tran" joint_name="joint6" actuator_name="joint6_actr"/>
+<xacro:transmission name="jaw1_tran" joint_name="jaw1" actuator_name="jaw1_actr"/>
+<xacro:transmission name="jaw2_tran" joint_name="jaw2" actuator_name="jaw2_actr"/> -->
+
+
+<!-- Gazebo plugin -->
+<gazebo>
+  <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+    <robotNamespace>/arctos</robotNamespace>
+  </plugin>
+</gazebo>
 
 </robot>

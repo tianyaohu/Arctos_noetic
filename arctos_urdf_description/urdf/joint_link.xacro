@@ -26,7 +26,6 @@
 </xacro:macro>
 
 
-
 <xacro:macro name="arctos_joint" params="name type parent child origin_xyz origin_rpy axis_xyz limit_u limit_l limit_e limit_v">
   <joint name="${name}" type="${type}">
     <parent link="${parent}"/>
@@ -36,6 +35,7 @@
     <limit upper="${limit_u}" lower="${limit_l}" effort="${limit_e}" velocity="${limit_v}"/>
   </joint>
 </xacro:macro>
+
 
 <xacro:macro name="transmission" params="name joint_name actuator_name">
   <transmission name="${name}">
