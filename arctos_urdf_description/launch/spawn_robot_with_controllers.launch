@@ -1,7 +1,7 @@
 <launch>
 
   <!-- Associate to the robot description parameter, the urdf file that model the robot -->
-  <param name="robot_description" command="$(find xacro)/xacro --inorder $(find arctos_urdf_description)/urdf/arctos_urdf.urdf" />
+  <param name="robot_description" command="$(find xacro)/xacro --inorder $(find arctos_urdf_description)/urdf/arctos_urdf.xacro" />
 
   <!-- Set teh position in empty world -->
   <arg name="x" default="0" />
@@ -28,11 +28,16 @@
         args="joint_state_controller 
               joint1_position_controller 
               joint2_position_controller
+              joint3_position_controller
+              joint4_position_controller
+              joint5_position_controller
+              joint6_position_controller
+              jaw1_position_controller
+              jaw2_position_controller
               --timeout 60" />
 
   <!-- Convert Joint State to TF -->
   <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" 
-        respawn="false" output="screen" 
-    remap="joint_states:=/arctos/joint_states" />
+        respawn="false" output="screen"  />
 
 </launch>

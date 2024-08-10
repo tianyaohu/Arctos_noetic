@@ -5,9 +5,12 @@
 <xacro:include filename="$(find arctos_urdf_description)/urdf/joint_link.xacro"/>
 
 
+<!-- Start of Selection -->
 <material name="paint_metallic_blue_2">
-  <color rgba="0.7764705882352941 0.7764705882352941 0.7764705882352941 1.0"/>
+<!-- <color rgba="0.7764705882352941 0.7764705882352941 0.7764705882352941 1.0"/> -->
+  <color rgba="0.0 0.0 1.0 1.0"/> <!-- A solid blue color that works in Gazebo -->
 </material>
+<!-- End of Selection -->
 
 <!-- Define the world link explicitly -->
 <link name="world"/>
@@ -45,7 +48,7 @@
     ixx="0.128567" iyy="0.14463" izz="0.044463" ixy="3e-06" iyz="-0.003293" ixz="0.001539"
 />
 
-<!-- <xacro:arctos_link 
+<xacro:arctos_link 
     name="Link_3_1" 
     origin_xyz="-0.043 0.019045 -0.550385" origin_rpy="0 0 0" 
     material_name="paint_metallic_blue_2" 
@@ -106,7 +109,7 @@
     inertia_origin_xyz="-0.008289104952972526 -0.009768535307719373 0.009395511902715814" inertia_origin_rpy="0 0 0" 
     mass="0.07312902168719511" 
     ixx="1.1e-05" iyy="6e-06" izz="1.4e-05" ixy="-1e-06" iyz="0.0" ixz="-1e-06"
-/> -->
+/>
 
 <xacro:arctos_joint
   name="joint1" type="continuous"
@@ -123,7 +126,7 @@
   axis_xyz="1.0 -0.0 -0.0"
   limit_u="2.3" limit_l="-1.45" limit_e="100" limit_v="1"
 />
-<!-- 
+
 <xacro:arctos_joint
   name="joint3" type="continuous"
   parent="Link_2_1" child="Link_3_1"
@@ -154,6 +157,7 @@
   axis_xyz="-0.0 1.0 -0.0"
   limit_u="${pi}" limit_l="${-pi}" limit_e="100" limit_v="1"
 />
+
 <xacro:arctos_joint
   name="gripper" type="fixed"
   parent="Link_6_1" child="Gripper_1"
@@ -174,7 +178,7 @@
   origin_xyz="0.007741 -0.039998 -0.030449" origin_rpy="0 0 0"
   axis_xyz="0.0 -0.0 1.0"
   limit_u="0.015" limit_l="0.0" limit_e="100" limit_v="100"
-/> -->
+/>  
 
 <!-- END of Gripper Section -->
 
@@ -182,12 +186,12 @@
 <!-- Transmission section -->
 <xacro:transmission name="joint1_tran" joint_name="joint1" actuator_name="joint1_actr"/>
 <xacro:transmission name="joint2_tran" joint_name="joint2" actuator_name="joint2_actr"/>
-<!-- <xacro:transmission name="joint3_tran" joint_name="joint3" actuator_name="joint3_actr"/>
+<xacro:transmission name="joint3_tran" joint_name="joint3" actuator_name="joint3_actr"/>
 <xacro:transmission name="joint4_tran" joint_name="joint4" actuator_name="joint4_actr"/>
 <xacro:transmission name="joint5_tran" joint_name="joint5" actuator_name="joint5_actr"/>
 <xacro:transmission name="joint6_tran" joint_name="joint6" actuator_name="joint6_actr"/>
 <xacro:transmission name="jaw1_tran" joint_name="jaw1" actuator_name="jaw1_actr"/>
-<xacro:transmission name="jaw2_tran" joint_name="jaw2" actuator_name="jaw2_actr"/> -->
+<xacro:transmission name="jaw2_tran" joint_name="jaw2" actuator_name="jaw2_actr"/>
 
 
 <!-- Gazebo plugin -->

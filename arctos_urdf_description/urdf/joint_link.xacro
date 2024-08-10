@@ -41,10 +41,13 @@
   <transmission name="${name}">
     <type>transmission_interface/SimpleTransmission</type>
     <joint name="${joint_name}">
-      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <!-- Use to be Efforjoint interface for gazebo. So the setup was hardware has EffortJoint interface; Software was JointPosition Interface -->
+      <!-- <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface> -->
+      <!-- For MoveIt Use JointPositionInterface as Hardware Interface; software has JointTrajectoryController-->
+      <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
     </joint>
     <actuator name="${actuator_name}">
-      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
       <mechanicalReduction>1</mechanicalReduction>
     </actuator>
   </transmission>
