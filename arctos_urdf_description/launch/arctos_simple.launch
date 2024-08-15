@@ -1,0 +1,38 @@
+<launch>
+  <!-- Associate to the robot description parameter, the URDF file that models the robot -->
+  <param name="robot_description" command="$(find xacro)/xacro --inorder $(find arctos_urdf_description)/urdf/arctos.xacro" />
+
+  <!-- Launch Gazebo with a simple world -->
+  <include file="$(find gazebo_ros)/launch/empty_world.launch">
+    <arg name="use_sim_time" value="true" />
+    <arg name="gui" value="true" />
+    <arg name="verbose" value="true" />
+  </include>
+
+  <!-- Spawn the robot in Gazebo -->
+  <node name="spawn_the_robot" pkg="gazebo_ros" type="spawn_model" output="screen"
+        args="-urdf -param robot_description -model arctos -x 0 -y 0 -z 0" />
+
+<!-- Load the controller params -->
+<!-- <rosparam file="$(find arctos_urdf_description)/config/joint_controller.yaml" /> -->
+
+<!-- Load ros_control controller configurations -->
+<rosparam file="$(find arctos_urdf_description)/config/arctos_joint_states.yaml" command="load" />
+<rosparam file="$(find arctos_urdf_description)/config/trajectory_control.yaml" command="load" />
+
+
+<node name="controller_spawner" pkg="controller_manager" type="spawner" 
+      respawn="true" output="screen" ns="/arctos"
+      args="joint_state_controller
+            gripper_controller
+            --timeout 60" >
+</node>
+
+  <!-- Publish robot state -->
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher">
+    <remap from="/joint_states" to="/arctos/joint_states"/>
+  </node>
+
+  <!-- Load teleop -->
+  <node name="rqt_joint_trajectory_controller" pkg="rqt_joint_trajectory_controller" type="rqt_joint_trajectory_controller" />
+</launch>

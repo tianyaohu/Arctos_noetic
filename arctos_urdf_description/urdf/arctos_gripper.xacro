@@ -5,6 +5,26 @@
 <!-- Arctos Simple Pinch Gripper -->
 <xacro:macro name="gripper" params="parent origin_xyz">
 
+    <!-- ros control plugin with mimic-->
+    <xacro:macro name="mimic_joint_plugin_gazebo" params="parent_joint mimic_joint has_pid:=false multiplier:=1.0 offset:=0 sensitiveness:=0.0 max_effort:=2000 robot_namespace:='/arctos'">
+        <gazebo>
+            <plugin name="${mimic_joint}_mimic_joint_plugin" filename="libroboticsgroup_gazebo_mimic_joint_plugin.so">
+                <joint>${parent_joint}</joint>
+                <mimicJoint>${mimic_joint}</mimicJoint>
+                <xacro:if value="${has_pid}">
+                    <hasPID />
+                </xacro:if>
+                <multiplier>${multiplier}</multiplier>
+                <offset>${offset}</offset>
+                <sensitiveness>${sensitiveness}</sensitiveness>
+                <maxEffort>${max_effort}</maxEffort>
+                <xacro:unless value="${robot_namespace == ''}">
+                    <robotNamespace>${robot_namespace}</robotNamespace>
+                </xacro:unless>
+            </plugin>
+        </gazebo>
+    </xacro:macro>
+
     <!-- Gripper Connector -->
     <xacro:arctos_link 
         name="Gripper_1" 
@@ -24,16 +44,6 @@
     />
 
     <!-- Jaw Left -->
-    <xacro:arctos_link 
-        name="Left_jaw_1" 
-        origin_xyz="-0.007934 0.359845 -0.599867" origin_rpy="0 0 0" 
-        material_name="paint_metallic_blue_2" 
-        inertia_origin_xyz="-0.011142702480351952 -0.009692440309284511 -0.009385792627785827" inertia_origin_rpy="0 0 0" 
-        mass="0.07369602565859415" 
-        ixx="1.1e-05" iyy="6e-06" izz="1.4e-05" ixy="2e-06" iyz="-0.0" ixz="-0.0"
-    />
-
-    <!-- <joint name="jaw1" type="prismatic"> -->
     <joint name="jaw1" type="prismatic">
         <parent link="Gripper_1"/>
         <child link="Left_jaw_1"/>
@@ -43,7 +53,36 @@
         <dynamics damping="1" friction="10"/>
     </joint>
 
+    <xacro:arctos_link 
+        name="Left_jaw_1" 
+        origin_xyz="-0.007934 0.359845 -0.599867" origin_rpy="0 0 0" 
+        material_name="paint_metallic_blue_2" 
+        inertia_origin_xyz="-0.011142702480351952 -0.009692440309284511 -0.009385792627785827" inertia_origin_rpy="0 0 0" 
+        mass="0.07369602565859415" 
+        ixx="1.1e-05" iyy="6e-06" izz="1.4e-05" ixy="2e-06" iyz="-0.0" ixz="-0.0"
+    />
+    <gazebo reference="Left_jaw_1">
+    <material>Gazebo/Green</material>
+    </gazebo>
+
+
     <xacro:transmission_effort name="left_jaw_tran" joint_name="jaw1" actuator_name="actr_left_jaw"/>
+
+    <!-- <joint name="jaw2" type="prismatic"> -->
+    <joint name="jaw2" type="prismatic">
+        <parent link="Gripper_1"/>
+        <child link="Right_jaw_1"/>
+        <axis xyz="0.0 -0.0 1.0"/>
+        <limit lower="0.0" upper="0.015" velocity="100" effort="1000"/>
+        <origin xyz="0.007741 -0.039998 -0.030449" rpy="0 0 0"/>
+        <dynamics damping="1" friction="10"/>
+        <mimic joint="jaw1" multiplier="1.0" offset="0.0"/>
+    </joint>
+    
+    <!-- <xacro:transmission_effort name="right_jaw_tran" joint_name="jaw2" actuator_name="actr_right_jaw"/> -->
+
+    <xacro:mimic_joint_plugin_gazebo  parent_joint="jaw1" mimic_joint="jaw2" 
+                                        has_pid="false" multiplier="1.0" max_effort="200" />
 
     <!-- Jaw Right -->
     <xacro:arctos_link 
@@ -54,61 +93,6 @@
         mass="0.07312902168719511" 
         ixx="1.1e-05" iyy="6e-06" izz="1.4e-05" ixy="-1e-06" iyz="0.0" ixz="-1e-06"
     />
-
-    <!-- <joint name="jaw2" type="prismatic"> -->
-    <joint name="jaw2" type="prismatic">
-        <parent link="Gripper_1"/>
-        <child link="Right_jaw_1"/>
-        <axis xyz="0.0 -0.0 1.0"/>
-        <limit lower="0.0" upper="0.015" velocity="100" effort="100"/>
-        <origin xyz="0.007741 -0.039998 -0.030449" rpy="0 0 0"/>
-        <dynamics damping="1" friction="10"/>
-        <mimic joint="jaw1" multiplier="-1.0" offset="0.0"/>
-    </joint>
-    
-    <xacro:transmission_effort name="right_jaw_tran" joint_name="jaw2" actuator_name="actr_right_jaw"/>
-
-    <!-- ros control plugin with mimic-->
-    <xacro:macro name="mimic_joint_plugin_gazebo" params="parent_joint mimic_joint has_pid:=false multiplier:=-1.0 offset:=0 sensitiveness:=0.0 max_effort:=200 robot_namespace:='/arctos'">
-        <gazebo>
-            <plugin name="${mimic_joint}_mimic_joint_plugin" filename="libroboticsgroup_upatras_gazebo_mimic_joint_plugin.so">
-                <joint>${parent_joint}</joint>
-                <mimicJoint>${mimic_joint}</mimicJoint>
-                <xacro:if value="${has_pid}">
-                    <hasPID />
-                </xacro:if>
-                <multiplier>${multiplier}</multiplier>
-                <offset>${offset}</offset>
-                <sensitiveness>${sensitiveness}</sensitiveness>
-                <maxEffort>${max_effort}</maxEffort>
-                <xacro:unless value="${robot_namespace == '/cobot'}">
-                    <robotNamespace>${robot_namespace}</robotNamespace>
-                </xacro:unless>
-            </plugin>
-        </gazebo>
-    </xacro:macro>
-    
-
-    <xacro:mimic_joint_plugin_gazebo  parent_joint="jaw1" mimic_joint="jaw2" 
-                                        has_pid="false" multiplier="-1.0" max_effort="200" />
-    <gazebo>
-        <plugin name="gazebo_grasp_fix" filename="libgazebo_grasp_fix.so">
-            <arm>
-                <arm_name>gripper</arm_name>
-                <palm_link>Gripper_1</palm_link>
-                <gripper_link>Right_jaw_1</gripper_link>
-                <gripper_link>Left_jaw_1</gripper_link>
-            </arm>
-            <forces_angle_tolerance>100</forces_angle_tolerance>
-            <update_rate>10</update_rate>
-            <grip_count_threshold>4</grip_count_threshold>
-            <max_grip_count>10</max_grip_count>
-            <release_tolerance>0.005</release_tolerance>
-            <disable_collision_on_attach>false</disable_collision_on_attach>
-            <contact_topic>__default_topic__</contact_topic>
-        </plugin>
-    </gazebo>
-
 </xacro:macro>
 
 </robot>

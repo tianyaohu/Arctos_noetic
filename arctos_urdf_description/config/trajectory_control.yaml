@@ -1,6 +1,7 @@
 arctos:
   arm_controller:
     # This type means that software inputs JointTrajectoryController, and outputs position controller
+    #     hardwareControllers/softwareControllers
     type: position_controllers/JointTrajectoryController #JointTrajectoryController
     joints:
       - joint1
@@ -23,15 +24,25 @@ arctos:
     action_monitor_rate: 10
 
   gripper_controller:
-    type: position_controllers/JointTrajectoryController
+    type: effort_controllers/JointTrajectoryController
     joints:
       - jaw1
-      - jaw2
+      # - jaw2
+    gains:
+      jaw1:
+        p: 4000
+        d: 1
+        i: 1
+        i_clamp: 1
+      # jaw2:
+      #   p: 1000
+      #   d: 5
+      #   i: 5
+      #   i_clamp: 0.5
     constraints:
       goal_time: 0.6
       stopped_velocity_tolerance: 0.05
-      jaw1: {trajectory: 0.5, goal: 0.5}
-      jaw2: {trajectory: 0.5, goal: 0.5}
-    stop_trajectory_duration: 0.6
-    state_publish_rate: 25
+      gripper_finger_joint: {trajectory: 0.2, goal: 0.2}
+    stop_trajectory_duration: 0.5
+    state_publish_rate:  125
     action_monitor_rate: 10

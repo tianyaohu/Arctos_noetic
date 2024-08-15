@@ -1,7 +1,7 @@
 <launch>
 
   <!-- Associate to the robot description parameter, the urdf file that model the robot -->
-  <param name="robot_description" command="$(find xacro)/xacro --inorder $(find arctos_urdf_description)/urdf/arctos_urdf.xacro" />
+  <param name="robot_description" command="$(find xacro)/xacro --inorder $(find arctos_urdf_description)/urdf/arctos.xacro" />
 
   <!-- Set teh position in empty world -->
   <arg name="x" default="0" />

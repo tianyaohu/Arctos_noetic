@@ -1,7 +1,5 @@
 <launch>
 
-  <arg name="namespace" default="" />
-
   <!-- GDB Debug Option -->
   <arg name="debug" default="false" />
   <arg unless="$(arg debug)" name="launch_prefix" value="" />
