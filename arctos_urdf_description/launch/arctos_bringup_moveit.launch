@@ -36,28 +36,27 @@
 </node>
 
 <!-- Convert Joint State to TF transform for rviz and rqt -->
-<node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"
-        output="screen" respawn="true">
-        <!-- <remap from="joint_states" to="/arctos/joint_states" /> -->
-</node>
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher">
+    <remap from="/joint_states" to="/arctos/joint_states"/>
+  </node>
 
 <!-- joint state publisher -->
 <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" >
     <remap from="joint_states" to="/arctos/joint_states" />
 </node>
 
-<include file="$(find arctos_moveit_config)/launch/planning_context.launch" >
+<!-- <include file="$(find arctos_moveit_config)/launch/planning_context.launch" >
     <arg name="load_robot_description" value="false"/>
-</include>
+</include> -->
 
-<include file= "$(find arctos_moveit_config)/launch/move_group.launch" >
+<!-- <include file= "$(find arctos_moveit_config)/launch/move_group.launch" >
     <arg name="publish_monitored_planning_scene" value="true" />
+</include> -->
     <!-- <arg name ="namespace" value="arctos"/> -->
-</include>
 
-<include file="$(find arctos_moveit_config)/launch/moveit_rviz.launch" >
+<!-- <include file="$(find arctos_moveit_config)/launch/moveit_rviz.launch" >
     <arg name="rviz_config" value="$(find arctos_moveit_config)/launch/moveit.rviz" />
-</include>
+</include> -->
 
 
 </launch>

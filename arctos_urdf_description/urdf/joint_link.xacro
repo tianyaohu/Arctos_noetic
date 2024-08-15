@@ -41,9 +41,6 @@
   <transmission name="${name}">
     <type>transmission_interface/SimpleTransmission</type>
     <joint name="${joint_name}">
-      <!-- Use to be Efforjoint interface for gazebo. So the setup was hardware has EffortJoint interface; Software was JointPosition Interface -->
-      <!-- <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface> -->
-      <!-- For MoveIt Use JointPositionInterface as Hardware Interface; software has JointTrajectoryController-->
       <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
     </joint>
     <actuator name="${actuator_name}">
@@ -53,6 +50,17 @@
   </transmission>
 </xacro:macro>
 
-
+<xacro:macro name="transmission_effort" params="name joint_name actuator_name">
+  <transmission name="${name}">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="${joint_name}">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="${actuator_name}">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+</xacro:macro>
 
 </robot>
